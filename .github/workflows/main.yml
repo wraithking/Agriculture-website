@@ -1,3 +1,5 @@
+name: Copy Changes to Staging
+
 on:
   workflow_dispatch:
     inputs:
