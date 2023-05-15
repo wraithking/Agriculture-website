@@ -1,0 +1,22 @@
+name: Copy Changes to Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      copy-changes:
+        description: 'Copy changes from main to staging'
+
+jobs:
+  copy-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Copy changes to staging
+        run: |
+          git checkout staging
+          git merge main --no-commit --no-ff
+          git commit -m "Copy changes from main to staging" --author "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com}"
+          git push origin staging
