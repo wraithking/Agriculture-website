@@ -1,0 +1,21 @@
+name: Testing action
+
+on:
+  workflow_dispatch:
+    inputs:
+      copy-changes:
+        description: 'Check changes in branch'
+
+jobs:
+  copy-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Checkout staging branch
+        run: git checkout staging
+      
+      - name: Look up for changes
+        run: git status
