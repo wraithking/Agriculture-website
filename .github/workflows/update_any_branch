@@ -1,10 +1,10 @@
-name: Copy Changes to Staging
+name: Copy changes from any branch
 
 on:
   workflow_dispatch:
     inputs:
       branch_name:
-        description: 'Name of the branch to merge into staging'
+        description: 'Name of the branch to merge into test'
         required: true
 
 jobs:
@@ -21,20 +21,20 @@ jobs:
           token: ${{ secrets.MY_PERSONAL_TOKEN }}
         
       - name: Fetch staging branch
-        run: git fetch origin staging
+        run: git fetch origin test
         
       - name: Checkout staging branch
-        run: git checkout staging
+        run: git checkout test
 
       - name: Merge changes from input branch to staging
         id: merge
         run: |
           OUTPUT=$(git merge ${{ github.event.inputs.branch_name }} --no-commit --no-ff --allow-unrelated-histories 2>&1)
-          git commit -m "Copy changes from ${{ github.event.inputs.branch_name }} to staging"
+          git commit -m "Copy changes from ${{ github.event.inputs.branch_name }} to test"
           echo "::set-output name=merge_output::$OUTPUT"
       
       - name: Push changes
-        run: git push origin staging
+        run: git push origin test
       
       - name: Check merge output
         run: |
