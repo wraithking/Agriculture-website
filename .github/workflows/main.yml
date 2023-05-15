@@ -16,3 +16,6 @@ jobs:
    
       - name: Look up for changes
         run: git status
+        
+      - name: Look up for changes
+        run: git branch
