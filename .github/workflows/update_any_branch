@@ -1,0 +1,43 @@
+name: Copy Changes to Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'Name of the branch to merge into staging'
+        required: true
+
+jobs:
+  copy-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fregante/setup-git-user@v2
+      
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.MY_PERSONAL_TOKEN }}
+        
+      - name: Fetch staging branch
+        run: git fetch origin staging
+        
+      - name: Checkout staging branch
+        run: git checkout staging
+
+      - name: Merge changes from input branch to staging
+        id: merge
+        run: |
+          OUTPUT=$(git merge ${{ github.event.inputs.branch_name }} --no-commit --no-ff --allow-unrelated-histories 2>&1)
+          git commit -m "Copy changes from ${{ github.event.inputs.branch_name }} to staging"
+          echo "::set-output name=merge_output::$OUTPUT"
+      
+      - name: Push changes
+        run: git push origin staging
+      
+      - name: Check merge output
+        run: |
+          if [[ "${{ steps.merge.outputs.merge_output }}" == *"Already up to date."* ]]; then
+            echo "Merge was successful. The staging branch was already up-to-date with the ${{ github.event.inputs.branch_name }} branch."
+          fi
