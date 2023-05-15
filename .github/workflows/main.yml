@@ -19,3 +19,7 @@ jobs:
         
       - name: Look up for changes
         run: git branch
+        
+      - name: Print github.actor
+        run: echo ${{ github.actor }}
+
