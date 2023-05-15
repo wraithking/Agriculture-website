@@ -26,5 +26,5 @@ jobs:
       - name: Merge changes from main to staging
         run: |
           git merge main --no-commit --no-ff --allow-unrelated-histories
-          git commit -m "Copy changes from main to staging" --author "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com}"
+          git commit -m "Copy changes from main to staging" --author "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com}>"
           git push origin staging
