@@ -13,7 +13,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-
+        
+      - name: Copy staging branch
+        run: git fetch origin staging
+        
       - name: Checkout staging branch
         run: git checkout staging
 
